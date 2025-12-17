@@ -6,8 +6,12 @@ import PracticeMCQ_BaseVsDerived from "@/components/h2_phy_measurements/physical
 import PracticeMCQ_PrefixesConversion from "@/components/h2_phy_measurements/physical_quantities_prefixes/PracticeMCQ_PrefixesConversion";
 import PracticeMCQ_Homogenity from "@/components/h2_phy_measurements/physical_quantities_prefixes/PracticeMCQ_Homogenity";
 import InlineCitation from "@/components/InlineCitation";
-import PracticeMCQ_Uncertainty_Instrument from "@/components/errors_and_uncertainties/PracticeMCQ_Uncertainty_Instrument";
+import PracticeMCQ_Uncertainty_Instrument from "@/components/h2_phy_measurements/errors_and_uncertainties/PracticeMCQ_Uncertainty_Instrument";
 import ContentContainer from "./components/ContentContainter";
+import VectorAdditionSimulationHeadToTail from "./components/h2_phy_measurements/scalar_and_vector/VetorAdditionSimulationHeadToTail";
+import VectorResolutionSimulation from "./components/h2_phy_measurements/scalar_and_vector/VectorResolutionSimulation";
+import Vector1DSimulation from "./components/h2_phy_measurements/scalar_and_vector/Vector1DSimulation";
+import VectorAdditionSimulationParallelogram from "./components/h2_phy_measurements/scalar_and_vector/VectorAdditionSimulationParallelogram";
 // import other MDX components here later
 
 export function useMDXComponents(
@@ -36,6 +40,10 @@ export function useMDXComponents(
     PracticeMCQ_Homogenity,
     PracticeMCQ_Uncertainty_Instrument,
     ContentContainer,
+    VectorAdditionSimulationHeadToTail,
+    VectorResolutionSimulation,
+    Vector1DSimulation,
+    VectorAdditionSimulationParallelogram,
 
     // allow overrides
     ...components,

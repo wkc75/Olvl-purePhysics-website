@@ -125,8 +125,8 @@ export default function Sidebar() {
             </SidebarLink>
 
             <SidebarLink
-              href="/physics/measurements/scalar-and-vector"
-              active={pathname.includes("scalar-and-vector")}
+              href="/physics/measurements/scalar_and_vector"
+              active={pathname.includes("scalar_and_vector")}
             >
               1.3 Scalar and Vector Quantities
             </SidebarLink>
