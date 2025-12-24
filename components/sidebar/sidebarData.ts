@@ -1,70 +1,17 @@
-/**
- * sidebarData.ts
- *
- * This file defines the ENTIRE structure of the Physics sidebar.
- *
- * IMPORTANT IDEA:
- * - The sidebar UI does NOT know Physics.
- * - It only knows how to render this data.
- *
- * To add / edit chapters:
- * 👉 You ONLY touch this file.
- */
-
-// ===============================
-// 🔹 TYPES (for safety & clarity)
-// ===============================
-
 export type SubChapter = {
-  /**
-   * Display text shown in the sidebar
-   */
   title: string;
-
-  /**
-   * Full route to the page
-   * Must match the folder structure in /app
-   */
   path: string;
 };
 
 export type Chapter = {
-  /**
-   * Unique ID used for React state
-   * (lowercase, no spaces)
-   */
   id: string;
-
-  /**
-   * Chapter title shown to users
-   */
   title: string;
-
-  /**
-   * where the big chapter link goes to
-   */
   landingPath?: string;
-
-  /**
-   * Base route for this chapter
-   * Used to auto-open the correct chapter
-   */
   basePath: string;
-
-  /**
-   * List of subchapters under this chapter
-   */
   subChapters: SubChapter[];
 };
 
-// ===============================
-// 🔹 SIDEBAR STRUCTURE DATA
-// ===============================
-
 export const sidebarChapters: Chapter[] = [
-  // ===============================
-  // 📘 1. Quantities and Measurements
-  // ===============================
   {
     id: "measurements",
     title: "1. Quantities and Measurements",
@@ -85,10 +32,6 @@ export const sidebarChapters: Chapter[] = [
       },
     ],
   },
-
-  // ===============================
-  // 📘 2. Forces and Moments
-  // ===============================
   {
     id: "Forces and Moments",
     title: "2. Forces and Moments",
@@ -109,10 +52,6 @@ export const sidebarChapters: Chapter[] = [
       },
     ],
   },
-
-  // ===============================
-  // 📘 3. Motion and Forces
-  // ===============================
   {
     id: "motion_and_forces",
     title: "3. Motion and Forces",

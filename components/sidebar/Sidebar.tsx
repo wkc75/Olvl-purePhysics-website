@@ -4,47 +4,26 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-
+import SidebarLink from "./SidebarLink";
 import { sidebarChapters } from "./sidebarData";
 
-/**
- * Sidebar
- *
- * Accordion rules:
- * ✅ At most ONE chapter open at a time
- * ✅ Closed chapters reserve ZERO space (no gaps)
- * ✅ Smooth open/close transitions (no layout jumps)
- */
 export default function Sidebar() {
   const pathname = usePathname();
 
-  // ===============================
-  // 🔹 SIDEBAR COLLAPSE STATE
-  // ===============================
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
-  // ===============================
-  // 🔹 ACCORDION OPEN STATE (SINGLE SOURCE OF TRUTH)
-  // ===============================
-  // null means: no chapter open (compact default)
   const [openChapterId, setOpenChapterId] = useState<string | null>(null);
 
-  // ===============================
-  // 🔹 AUTO-OPEN BASED ON ROUTE
-  // ===============================
   useEffect(() => {
-    // Find the first chapter whose basePath matches the current route
-    const match = sidebarChapters.find((c) => pathname.startsWith(c.basePath));
-
-    // If we are inside a chapter route, keep it open; otherwise close all.
+    const match = sidebarChapters.find((c) =>
+      pathname.startsWith(c.basePath)
+    );
     setOpenChapterId(match ? match.id : null);
   }, [pathname]);
 
-  // ===============================
-  // 🔹 CLICK HANDLER (ACCORDION TOGGLE)
-  // ===============================
   function toggleChapter(chapterId: string) {
-    setOpenChapterId((current) => (current === chapterId ? null : chapterId));
+    setOpenChapterId((current) =>
+      current === chapterId ? null : chapterId
+    );
   }
 
   return (
@@ -60,9 +39,6 @@ export default function Sidebar() {
         ${sidebarOpen ? "w-64" : "w-14"}
       `}
     >
-      {/* ===============================
-          🔹 CHATGPT-STYLE TOGGLE HANDLE
-          =============================== */}
       <div
         onClick={() => setSidebarOpen((prev) => !prev)}
         className="
@@ -83,7 +59,8 @@ export default function Sidebar() {
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") setSidebarOpen((p) => !p);
+          if (e.key === "Enter" || e.key === " ")
+            setSidebarOpen((p) => !p);
         }}
       >
         <ChevronLeft
@@ -94,9 +71,6 @@ export default function Sidebar() {
         />
       </div>
 
-      {/* ===============================
-          🔹 SIDEBAR CONTENT
-          =============================== */}
       <div
         className={`
           h-full
@@ -106,22 +80,17 @@ export default function Sidebar() {
           ${sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
         `}
       >
-        {/* Site title */}
         <Link href="/" className="block p-4 text-lg font-bold hover:underline">
           GCE A Level Physics
         </Link>
 
-        <nav className="px-4 text-sm space-y-2">
+        <nav className="px-4 space-y-2 text-sm">
           {sidebarChapters.map((chapter) => {
             const isOpen = openChapterId === chapter.id;
 
             return (
               <div key={chapter.id} className="select-none">
-                {/* ===============================
-                    🔹 CHAPTER HEADER
-                    =============================== */}
                 <div className="flex items-center gap-2 font-semibold">
-                  {/* Chevron button toggles accordion open state */}
                   <button
                     type="button"
                     onClick={() => toggleChapter(chapter.id)}
@@ -135,7 +104,9 @@ export default function Sidebar() {
                       transition-colors
                     "
                     aria-label={
-                      isOpen ? `Collapse ${chapter.title}` : `Expand ${chapter.title}`
+                      isOpen
+                        ? `Collapse ${chapter.title}`
+                        : `Expand ${chapter.title}`
                     }
                     aria-expanded={isOpen}
                   >
@@ -147,7 +118,6 @@ export default function Sidebar() {
                     />
                   </button>
 
-                  {/* Chapter title navigates (kept as your original UX) */}
                   <Link
                     href={chapter.landingPath || chapter.basePath}
                     className="flex-1 hover:underline"
@@ -156,14 +126,6 @@ export default function Sidebar() {
                   </Link>
                 </div>
 
-                {/* ===============================
-                    🔹 SUBCHAPTERS (TRUE COLLAPSE, NO RESERVED SPACE)
-                    ===============================
-                    We use a grid-row animation:
-                    - closed: grid-rows-[0fr] => height collapses to 0
-                    - open:   grid-rows-[1fr] => height expands to fit content
-                    This avoids layout gaps and looks like a real accordion.
-                 */}
                 <div
                   className={`
                     ml-6
@@ -174,7 +136,6 @@ export default function Sidebar() {
                     ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
                   `}
                 >
-                  {/* min-h-0 is CRUCIAL in grid collapse patterns */}
                   <div
                     className={`
                       min-h-0
@@ -182,10 +143,13 @@ export default function Sidebar() {
                       transition-all
                       duration-300
                       ease-out
-                      ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}
+                      ${
+                        isOpen
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 -translate-y-1"
+                      }
                     `}
                     style={{
-                      // Optional polish: slight stagger so opacity follows height
                       transitionDelay: isOpen ? "70ms" : "0ms",
                     }}
                   >
@@ -206,34 +170,5 @@ export default function Sidebar() {
         </nav>
       </div>
     </aside>
-  );
-}
-
-/**
- * SidebarLink
- *
- * Single subchapter link with active highlighting.
- */
-function SidebarLink({
-  href,
-  active,
-  children,
-}: {
-  href: string;
-  active: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`
-        block
-        mt-2
-        hover:underline
-        ${active ? "font-semibold text-white" : "text-slate-300"}
-      `}
-    >
-      {children}
-    </Link>
   );
 }
